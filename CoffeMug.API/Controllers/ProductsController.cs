@@ -8,11 +8,11 @@ namespace CoffeMug.API.Controllers
 {
 	[Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
        private readonly IProductDataObject _productDataObject;
 
-		public ProductController(IProductDataObject productDataObject)
+		public ProductsController(IProductDataObject productDataObject)
         {
 			_productDataObject = productDataObject;
 		}
@@ -24,28 +24,31 @@ namespace CoffeMug.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("show/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productDataObject.GetByIdAsync(id);
             return Ok(product);
         }
 
-		[HttpPost("add")]
+		[HttpPost]
         public async Task<IActionResult> CreateProduct(ProductAddDto product)
         {
             await _productDataObject.Create(product);
             return Ok();
         }
 
-		[HttpPost("modify")]
-        public IActionResult UpdateProduct(ProductDto product)
+		[HttpPut("{id}")]
+        public IActionResult UpdateProduct(Guid id, [FromBody] ProductDto product)
         {
+			 if (id != product.Id)
+                return BadRequest();
+
             var productUpdated = _productDataObject.Update(product);
             return Ok(productUpdated);
         }
 
-		[HttpPost("remove/{id}")]
+		[HttpDelete("{id}")]
         public async Task<IActionResult> RemoveProduct(Guid id)
         {
 			await _productDataObject.RemoveAsync(id);
