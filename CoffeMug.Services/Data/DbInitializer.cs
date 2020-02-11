@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using CoffeMug.Services.Models;
+using CoffeMug.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -29,6 +30,10 @@ namespace CoffeMug.Services.Data
 		{
 			var productData = System.IO.File.ReadAllText("Data/Jsons/productSeedData.json");
             var products = JsonConvert.DeserializeObject<List<Product>>(productData);
+			foreach (var product in products)
+			{
+				product.Id = Guid.NewGuid();
+			}
 			_db.Products.AddRange(products);
             _db.SaveChanges();
 		}

@@ -1,4 +1,4 @@
-using CoffeMug.Services.Models;
+using CoffeMug.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeMug.Services.Data

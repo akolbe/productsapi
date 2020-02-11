@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CoffeMug.Services.Services;
 using CoffeMug.Services.Services.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CoffeMug.API.Controllers
 {
-    [Route("api/[controller]")]
+	[Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -27,7 +24,7 @@ namespace CoffeMug.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("show/{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productDataObject.GetByIdAsync(id);
@@ -35,7 +32,7 @@ namespace CoffeMug.API.Controllers
         }
 
 		[HttpPost("add")]
-        public async Task<IActionResult> CreateProduct(ProductDto product)
+        public async Task<IActionResult> CreateProduct(ProductAddDto product)
         {
             await _productDataObject.Create(product);
             return Ok();

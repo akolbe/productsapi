@@ -1,41 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CoffeMug.Services.Models;
+using CoffeMug.Core.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeMug.Services.Data.Impl
 {
 	public class ProductRepository : IProductRepository
 	{
-		private readonly CoffeemugContext _context;
-		private readonly IBaseRepository _baseRepository;
+		private readonly CoffeemugContext _db;
 
-		public ProductRepository(CoffeemugContext context, IBaseRepository baseRepository)
+		public ProductRepository(CoffeemugContext db)
 		{
-			_context = context;
-			_baseRepository = baseRepository;
+			_db = db;
 		}
 
 		public async Task AddAsync(Product product)
 		{
-			await _baseRepository.AddAsync(_context, product);
+			await _db.AddAsync(product);
+			await _db.SaveChangesAsync();
 		}
 
 		public void Delete(Product product)
 		{
-			_baseRepository.Delete(_context, product);
+			_db.Remove(product);
+			_db.SaveChanges();
 		}
 
 		public async Task<Product> GetProductAsync(Guid id)
 		{
-			var product = await _context.Products.FirstOrDefaultAsync(u => u.Id == id);
+			var product = await _db.Products.FirstOrDefaultAsync(u => u.Id == id);
             return product;
 		}
 
 		public async Task<IEnumerable<Product>> GetProductsAsync()
 		{
-			var products = await _context.Products.ToListAsync();
+			var products = await _db.Products.ToListAsync();
             return products;
 		}
 
@@ -46,7 +46,9 @@ namespace CoffeMug.Services.Data.Impl
 
 		public Product Update(Product product)
 		{
-			return _baseRepository.Update(_context, product);
+			var entityUpdated = _db.Update(product);
+			_db.SaveChanges();
+			return entityUpdated.Entity;
 		}
 	}
 }

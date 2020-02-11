@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using CoffeMug.Core.Domain;
 using CoffeMug.Services.Data;
-using CoffeMug.Services.Models;
 using CoffeMug.Services.Services.Dtos;
 
 namespace CoffeMug.Services.Services.Impl
@@ -19,7 +19,7 @@ namespace CoffeMug.Services.Services.Impl
 			_mapper = mapper;
 		}
 
-		public async Task Create(ProductDto product)
+		public async Task Create(ProductAddDto product)
 		{
 			var productDomain = _mapper.Map<Product>(product);
 			await _productRepository.AddAsync(productDomain);

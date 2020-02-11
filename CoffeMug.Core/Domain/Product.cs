@@ -1,10 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoffeMug.Services.Models
+namespace CoffeMug.Core.Domain
 {
-    public class Product
+	public class Product
     {
 		[Key]
         public Guid Id { get; set; }

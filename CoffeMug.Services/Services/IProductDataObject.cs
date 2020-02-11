@@ -9,7 +9,7 @@ namespace CoffeMug.Services.Services
     {
 		Task<IEnumerable<ProductDto>> GetListAsync();
 		Task<ProductDto> GetByIdAsync(Guid id);
-		Task Create(ProductDto product);
+		Task Create(ProductAddDto product);
 		ProductDto Update(ProductDto product);
 		Task RemoveAsync(Guid id);
     }
